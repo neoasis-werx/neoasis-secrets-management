@@ -7,7 +7,7 @@
     public class SecretVariant
     {
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         /// <param name="secretType">Type of the secret.</param>
@@ -18,37 +18,37 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         public SecretVariant(byte[] secret) : this(secret, SecretType.ByteArray) { }
 
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         public SecretVariant(string secret) : this(secret, SecretType.String) { }
 
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         public SecretVariant(SecureString secret) : this(secret, SecretType.SecureString) { }
 
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         public SecretVariant(NetworkCredential secret) : this(secret, SecretType.NetworkCredential) { }
 
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         public SecretVariant(Hashtable secret) : this(secret, SecretType.Hashtable) { }
 
         /// <summary>
-        /// Initializes a new instance of the TDK.SecretsManagement.SecretVariant class.
+        /// Initializes a new instance of the SecretVariant class.
         /// </summary>
         /// <param name="secret">The secret.</param>
         public SecretVariant(IDictionary<string, object> secret) : this(secret, SecretType.IDictionaryStringObject) { }
