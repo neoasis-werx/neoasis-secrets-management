@@ -1,8 +1,12 @@
 namespace SecretsManagement.Tests;
 
 using System.Net;
+
 using CredentialManagerVault;
+
 using KeePassVault;
+
+using SecretsManagement.Abstractions;
 
 [TestFixture]
 public class SecretsManagerTests

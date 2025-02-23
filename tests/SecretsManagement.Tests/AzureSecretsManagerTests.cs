@@ -3,6 +3,7 @@ namespace SecretsManagement.Tests;
 
 using AzSecretsVault;
 
+using SecretsManagement.Abstractions;
 
 [TestFixture]
 public class AzureSecretsManagerTests
