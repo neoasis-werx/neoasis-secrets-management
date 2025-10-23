@@ -139,7 +139,7 @@ public class KeePassSecretsVault : AbstractSecretsVault<KeePassSecretsVault>
     {
         if (!await OpenDatabaseAsync())
         {
-            return Enumerable.Empty<SecretInformation>();
+            return [];
         }
 
         try
@@ -147,22 +147,27 @@ public class KeePassSecretsVault : AbstractSecretsVault<KeePassSecretsVault>
             var entry = _database.RootGroup.Entries.FirstOrDefault(e => e.Strings.ReadSafe(PwDefs.TitleField) == name);
             if (entry == null)
             {
-                return Enumerable.Empty<SecretInformation>();
+                return [];
             }
 
-            var secretInfo = new SecretInformation(
-                name,
-                SecretType.String,
-                "KeePassVault",
-                new ReadOnlyDictionary<string, object>(new Dictionary<string, object>())
-            );
+            if (name != null)
+            {
+                var secretInfo = new SecretInformation(
+                    name,
+                    SecretType.String,
+                    "KeePassVault",
+                    new ReadOnlyDictionary<string, object>(new Dictionary<string, object>())
+                );
 
-            return await Task.FromResult(new List<SecretInformation> { secretInfo });
+                return await Task.FromResult(new List<SecretInformation> { secretInfo });
+            }
         }
         catch (Exception)
         {
-            return Enumerable.Empty<SecretInformation>();
+            return [];
         }
+
+        return [];
     }
 
     public override async Task<bool> SetSecretInfoAsync(string name, IDictionary<string, object> secretMetadata)

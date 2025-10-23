@@ -7,9 +7,9 @@ namespace SecretsManagement.Abstractions
         private readonly ConcurrentDictionary<string, SecretsVaultInfo> _vaultInfos = new();
         private readonly ConcurrentDictionary<string, ISecretsVault> _vaults = new();
 
-        public bool TryGetValue(string vaultName, out ISecretsVault? vault)
+        public bool TryGetValue(string vaultName, out ISecretsVault vault)
         {
-            return _vaults.TryGetValue(vaultName, out vault);
+            return _vaults.TryGetValue(vaultName, out vault!);
         }
 
         public bool TryGetVaultInfo(string vaultName, out SecretsVaultInfo? vaultInfo)

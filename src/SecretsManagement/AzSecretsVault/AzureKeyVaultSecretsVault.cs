@@ -51,7 +51,8 @@ public class AzureKeyVaultSecretsVault : AbstractSecretsVault<AzureKeyVaultSecre
         {
             await _secretClient.StartDeleteSecretAsync(name);
             var r = _secretClient.PurgeDeletedSecretAsync(name);
-            return true;
+
+            return r.Result.Status == 200;
         }
         catch (Exception)
         {

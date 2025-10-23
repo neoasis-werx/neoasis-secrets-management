@@ -69,7 +69,7 @@ public interface ISecretsManager
     /// The search is performed over all registered vaults, unless a specific vault name is specified.
     /// Secret metadata consists of the secret name, secret type, vault name, and optional additional user data if supported by the extension vault.
     /// </remarks>
-    Task<IEnumerable<SecretInformation>> GetSecretInfoAsync(string name, string? vaultName = null);
+    Task<IEnumerable<SecretInformation>> GetSecretInfoAsync(string? name = null, string? vaultName = null);
 
     /// <summary>
     /// Adds or replaces additional secret metadata to a secret currently stored in a vault.

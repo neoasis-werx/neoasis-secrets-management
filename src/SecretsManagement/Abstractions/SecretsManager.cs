@@ -1,3 +1,5 @@
+#pragma warning disable S3267
+
 namespace SecretsManagement.Abstractions;
 
 using System.Collections.Immutable;
@@ -168,9 +170,9 @@ public class SecretsManager : ISecretsManager
             {
                 _defaultVaultName = null;
             }
-            return true;
+            return await Task.FromResult(true);
         }
-        return false;
+        return await Task.FromResult(false);
     }
 
     public async Task<bool> SetSecretVaultDefaultAsync(string vaultName)
@@ -189,12 +191,9 @@ public class SecretsManager : ISecretsManager
 
         foreach (var vaultInfo in _vaultRegistry.GetAllVaultInfos())
         {
-            if (vaultNames == null || vaultNames.Contains(vaultInfo.VaultName))
+            if ((vaultNames == null || vaultNames.Contains(vaultInfo.VaultName)) && _vaultRegistry.TryGetValue(vaultInfo.VaultName, out var vault))
             {
-                if (_vaultRegistry.TryGetValue(vaultInfo.VaultName, out var vault))
-                {
-                    result &= await vault.TestVaultAsync();
-                }
+                result &= await vault.TestVaultAsync();
             }
         }
 
@@ -207,6 +206,6 @@ public class SecretsManager : ISecretsManager
         {
             return await vault.UnlockVaultAsync(credential);
         }
-        return false;
+        return await Task.FromResult(false);
     }
 }

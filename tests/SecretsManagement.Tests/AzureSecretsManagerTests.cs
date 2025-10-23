@@ -1,9 +1,8 @@
-
 namespace SecretsManagement.Tests;
 
 using AzSecretsVault;
 
-using SecretsManagement.Abstractions;
+using Abstractions;
 
 [TestFixture]
 public class AzureSecretsManagerTests
@@ -35,24 +34,24 @@ public class AzureSecretsManagerTests
 
         // Register the Azure Key Vault
         bool registerResult = await _secretsManager.RegisterSecretVaultAsync(
-            moduleName: typeof(AzureKeyVaultSecretsVault).AssemblyQualifiedName,
+            moduleName: typeof(AzureKeyVaultSecretsVault).AssemblyQualifiedName!,
             vaultName: keyVaultName,
             vaultParameters: vaultParameters,
             isDefaultVault: true
         );
-        Assert.IsTrue(registerResult, "Failed to register Azure Key Vault");
+        Assert.That(registerResult, Is.True, "Failed to register Azure Key Vault");
 
         // Set a secret
         bool setSecretResult = await _secretsManager.SetSecretAsync(secretName, "MySecretValue");
-        Assert.IsTrue(setSecretResult, "Failed to set secret");
+        Assert.That(setSecretResult, Is.True, "Failed to set secret");
 
         // Get the secret
         var secret = await _secretsManager.GetSecretAsync(secretName, asPlainText: true);
-        Assert.AreEqual("MySecretValue", secret, "Failed to retrieve secret");
+        Assert.That(secret, Is.EqualTo("MySecretValue"), "Failed to retrieve secret");
 
         // Remove the secret
         bool removeSecretResult = await _secretsManager.RemoveSecretAsync(secretName, keyVaultName);
-        Assert.IsTrue(removeSecretResult, "Failed to remove secret");
+        Assert.That(removeSecretResult, Is.True, "Failed to remove secret");
 
 
         var information =  await _secretsManager.GetSecretInfoAsync();

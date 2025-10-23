@@ -6,7 +6,7 @@ using CredentialManagerVault;
 
 using KeePassVault;
 
-using SecretsManagement.Abstractions;
+using Abstractions;
 
 [TestFixture]
 public class SecretsManagerTests
@@ -34,24 +34,25 @@ public class SecretsManagerTests
 
         // Register the KeePass vault
         bool registerResult = await _secretsManager.RegisterSecretVaultAsync(
-            moduleName: typeof(KeePassSecretsVault).AssemblyQualifiedName,
+            moduleName: typeof(KeePassSecretsVault).AssemblyQualifiedName!,
             vaultName: "KeePassVault",
             vaultParameters: vaultParameters,
             isDefaultVault: true
         );
-        Assert.IsTrue(registerResult, "Failed to register KeePass vault");
+        Assert.That(registerResult, Is.True, "Failed to register KeePass vault");
 
         // Set a secret
         bool setSecretResult = await _secretsManager.SetSecretAsync("MySecret", "MySecretValue");
-        Assert.IsTrue(setSecretResult, "Failed to set secret");
+
+        Assert.That(setSecretResult, Is.True, "Failed to set secret");
 
         // Get the secret
         var secret = await _secretsManager.GetSecretAsync("MySecret", asPlainText: true);
-        Assert.AreEqual("MySecretValue", secret, "Failed to retrieve secret");
+        Assert.That(secret, Is.EqualTo("MySecretValue"), "Failed to retrieve secret" );
 
         // Remove the secret
         bool removeSecretResult = await _secretsManager.RemoveSecretAsync("MySecret", "KeePassVault");
-        Assert.IsTrue(removeSecretResult, "Failed to remove secret");
+        Assert.That(removeSecretResult, Is.True, "Failed to remove secret");
     }
 
 
@@ -61,28 +62,29 @@ public class SecretsManagerTests
         var vaultParameters = new Dictionary<string, object>();
 
 
-        var vaultName = typeof(CredentialManagerSecretsVault).Name;
+        var vaultName = nameof(CredentialManagerSecretsVault);
+        Assert.That(vaultName, Is.Not.Null);
 
-        // Register the KeePass vault
+        // Register the CredentialManager vault
         bool registerResult = await _secretsManager.RegisterSecretVaultAsync(
-            moduleName: typeof(CredentialManagerSecretsVault).AssemblyQualifiedName,
+            moduleName: typeof(CredentialManagerSecretsVault).AssemblyQualifiedName!,
             vaultName: vaultName,
             vaultParameters: vaultParameters,
             isDefaultVault: true
         );
-        Assert.IsTrue(registerResult, "Failed to register KeePass vault");
+        Assert.That(registerResult, Is.True, "Failed to register CredentialManager vault");
 
         // Set a secret
         bool setSecretResult = await _secretsManager.SetSecretAsync("MySecret", new NetworkCredential(string.Empty, "MySecretValue"));
-        Assert.IsTrue(setSecretResult, "Failed to set secret");
+        Assert.That(setSecretResult, Is.True, "Failed to set secret");
 
         // Get the secret
         var secret = await _secretsManager.GetSecretAsync("MySecret", asPlainText: true) as NetworkCredential;
-        Assert.AreEqual("MySecretValue", secret?.Password, "Failed to retrieve secret");
+        Assert.That(secret?.Password, Is.EqualTo("MySecretValue"), "Failed to retrieve secret");
 
         // Remove the secret
         bool removeSecretResult = await _secretsManager.RemoveSecretAsync("MySecret", vaultName);
-        Assert.IsTrue(removeSecretResult, "Failed to remove secret");
+        Assert.That(removeSecretResult, Is.True, "Failed to remove secret");
 
        var information =  await _secretsManager.GetSecretInfoAsync();
        foreach (var secretInformation in information)
@@ -91,6 +93,7 @@ public class SecretsManagerTests
        }
 
        var credential = (_secretsManager.GetSecretAsync("THI|QlikServer|qa-thi.cw-eng-test.com|d.mccord").Result) as NetworkCredential;
+       Assert.That(credential, Is.Not.Null);
        Console.WriteLine($"THI|QlikServer|qa-thi.cw-eng-test.com|d.mccord = {credential.UserName}");
     }
 }
